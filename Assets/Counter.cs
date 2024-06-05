@@ -1,16 +1,16 @@
+using System;
 using UnityEngine;
 using System.Collections;
-using TMPro;
 
 public class Counter : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private float _delay;
 
     private Coroutine _coroutine;
     private bool _isCounting = false;
 
-    private float _count = 0;
+    public float Count = 0;
+    public event Action CounterWork;
 
     private void Update()
     {
@@ -37,8 +37,8 @@ public class Counter : MonoBehaviour
     {
         while (_isCounting)
         {
-            _count++;
-            _text.text = _count.ToString();
+            Count++;
+            CounterWork?.Invoke();
             yield return new WaitForSeconds(delay);
         }
     }
