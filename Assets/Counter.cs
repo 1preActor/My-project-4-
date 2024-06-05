@@ -1,28 +1,35 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using System.Collections;
 
 public class Counter : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private float _delay;
 
-    public event Action CounterWork;
-
+    private Coroutine _coroutine;
     private bool _isCounting = false;
+
+    public float Count = 0;
+    public event Action CounterWork;
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            _isCounting=true;
-
-            if (_isCounting)
-                StartCoroutine(Countup(_delay));
+            if (_isCounting == true)
+            {
+                _isCounting = false;
+            }
             else
-                StopCoroutine(Countup(_delay));
+            {
+                _isCounting = true;
+
+                if (_isCounting)
+                    _coroutine = StartCoroutine(Countup(_delay));
+                else
+                    if(_coroutine !=  null)
+                    StopCoroutine(_coroutine);
+            }
         }
     }
 
@@ -30,6 +37,7 @@ public class Counter : MonoBehaviour
     {
         while (_isCounting)
         {
+            Count++;
             CounterWork?.Invoke();
             yield return new WaitForSeconds(delay);
         }
