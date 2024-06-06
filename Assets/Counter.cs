@@ -9,14 +9,13 @@ public class Counter : MonoBehaviour
 
     private Coroutine _coroutine;
     private bool _isCounting = false;
-
     private float _count = 0;
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (_isCounting == true)
+            if (_isCounting)
             {
                 _isCounting = false;
             }
@@ -25,7 +24,7 @@ public class Counter : MonoBehaviour
                 _isCounting = true;
 
                 if (_isCounting)
-                    _coroutine = StartCoroutine(Countup(_delay));
+                    _coroutine = StartCoroutine(Counting(_delay));
                 else
                     if(_coroutine !=  null)
                     StopCoroutine(_coroutine);
@@ -33,13 +32,15 @@ public class Counter : MonoBehaviour
         }
     }
 
-    private IEnumerator Countup(float delay)
+    private IEnumerator Counting(float delay)
     {
+        var wait = new WaitForSeconds(delay);
+
         while (_isCounting)
         {
             _count++;
             _text.text = _count.ToString();
-            yield return new WaitForSeconds(delay);
+            yield return wait;
         }
     }
 }
