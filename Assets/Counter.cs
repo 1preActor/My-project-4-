@@ -17,17 +17,15 @@ public class Counter : MonoBehaviour
         {
             if (_isCounting)
             {
+                if (_coroutine != null)
+                    StopCoroutine(_coroutine);
+
                 _isCounting = false;
             }
             else
             {
                 _isCounting = true;
-
-                if (_isCounting)
-                    _coroutine = StartCoroutine(Counting(_delay));
-                else
-                    if(_coroutine !=  null)
-                    StopCoroutine(_coroutine);
+                _coroutine = StartCoroutine(Counting(_delay));
             }
         }
     }
